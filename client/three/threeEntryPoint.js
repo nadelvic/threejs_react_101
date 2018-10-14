@@ -10,14 +10,24 @@ export default containerElement => {
     function createCanvas(document, containerElement) {
       const canvas = document.createElement('canvas');
       containerElement.appendChild(canvas);
+     
     
       return canvas;
     }
     function bindEventListeners() {
       window.onresize = resizeCanvas;
       canvas.onclick = onClickAction;
-      canvas.mouseover = onMouseEnter;
-      canvas.mouseout = onMouseLeave;
+      canvas.addEventListener("mouseenter", () => {
+        sceneManager.enterCanvas();
+      });
+      canvas.addEventListener("mouseleave", () => {
+        sceneManager.leaveCanvas();
+      });
+      canvas.addEventListener("mousemove", (event) => {
+        sceneManager.mouseMoveOnCanvas(event,canvas);
+      } )
+      
+      
       resizeCanvas();
     }
     function resizeCanvas() {
@@ -28,6 +38,8 @@ export default containerElement => {
       canvas.width = canvas.offsetWidth;
       canvas.height = canvas.offsetHeight;
       sceneManager.onWindowResize();
+      console.log(canvas.getBoundingClientRect().top);
+      console.log(canvas.clientHeight);
     }
 
     function onClickAction(){

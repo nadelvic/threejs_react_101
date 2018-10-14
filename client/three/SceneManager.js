@@ -1,19 +1,20 @@
 import * as THREE from 'three';
-import {OrbitControls} from 'three-orbitcontrols';
+import OrbitControls from 'three-orbitcontrols';
+import Stats from 'stats-js';
+import RendererStats from  'three-webgl-stats';
 import SceneSubject from './scenes/SceneSubjects';
 import GeneralLights from './scenes/GeneralLights';
 import CameraManager from './CameraManager';
+
 /**
  * SceneManager is the object responsible for the threejs logic.
  * 
  */
-
-
-
 export default canvas => {
 
-
-const origin = new THREE.Vector3(0,0,0);
+const canvasBehaviour = {
+  pointerCamera : false
+}
 
 const screenDimensions = {
     width: canvas.width,
@@ -32,6 +33,17 @@ const mousePosition = {
   const camera = buildCamera(screenDimensions); 
   const sceneSubjects = createSceneSubjects(scene);
   const cameraManager = createCameraManager(camera);
+  const rendererStats  = new RendererStats();
+  const stats = new Stats();
+  rendererStats.domElement.style.position   = 'absolute';
+  rendererStats.domElement.style.left  = '0px';
+  rendererStats.domElement.style.bottom    = '0px';
+  stats.domElement.style.position   = 'absolute';
+  stats.domElement.style.right  = '0px';
+  stats.domElement.style.top   = '0px';
+  document.body.appendChild( rendererStats.domElement );
+  document.body.appendChild( stats.domElement );
+  const mouse = new THREE.Vector2();
   //const vector = new THREE.Vector3(mouse.x, mouse.y, 0.5);
 
   
@@ -47,6 +59,7 @@ const mousePosition = {
         const DPR = (window.devicePixelRatio) ? window.devicePixelRatio : 1;
         renderer.setPixelRatio(DPR);
         renderer.setSize(width, height);
+       
 
         renderer.gammaInput = true;
         renderer.gammaOutput = true; 
@@ -77,12 +90,19 @@ const mousePosition = {
   }
 
 
+
   function update() {
+    stats.begin();
     const elapsedTime = clock.getElapsedTime();
     cameraManager.update(elapsedTime);
-    
     for(let i=0; i<sceneSubjects.length; i++) sceneSubjects[i].update(elapsedTime);
+    rendererStats.update(renderer);
     renderer.render(scene, camera);
+    if(canvasBehaviour.pointerCamera == true){
+
+      cameraManager.pointerEffect(elapsedTime,mouse);
+    }
+    stats.end();
   }
   function onWindowResize() { 
     const { width, height } = canvas;
@@ -92,11 +112,36 @@ const mousePosition = {
     camera.updateProjectionMatrix();
     renderer.setSize(canvas.width, canvas.height);
   }
+  function enterCanvas(){
+    canvasBehaviour.pointerCamera = true;
+  }
+
+  function leaveCanvas(){
+    canvasBehaviour.pointerCamera = false;
+  }
+
+  function mouseMoveOnCanvas(event,canvas){
+    const rect = canvas.getBoundingClientRect();
+    
+    event.preventDefault();
+    const clientY = event.clientY - rect.top;
+    const clientX = event.clientX - rect.left;
+    mouse.x = (clientX / canvas.clientWidth) * 2 - 1;
+    //mouse.y = -(clientY / window.innerHeight)*2 + 1;
+    mouse.y = -(clientY / canvas.clientHeight)*2 + 1;
+    //mouse.y = mouse.y - rect.top;
+   
+  
+    return mouse;
+  }
   /** 
    *  function onClick() {}
   */
   return {
     update,
-    onWindowResize
+    onWindowResize,
+    enterCanvas,
+    leaveCanvas,
+    mouseMoveOnCanvas
   }
 }
