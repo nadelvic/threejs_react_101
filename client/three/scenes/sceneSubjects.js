@@ -35,7 +35,7 @@ export default scene => {
             if(i%2 == 0) shift = inc / 2;
            
             const dot = new THREE.Points( dotGeometry, dotMaterial );  
-            dot.position.set(minX + inc * i,1, minZ + inc * j);
+            dot.position.set(minX + inc * i,0, minZ + inc * j);
             scene.add( dot );
             
         }

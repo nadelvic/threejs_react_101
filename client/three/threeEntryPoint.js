@@ -1,6 +1,9 @@
-import SceneManager from './SceneManager'
+import SceneManager from './SceneManager';
+import TweenLite from 'gsap/TweenLite';
 
 export default containerElement => {
+    //TweenLite.ticker.addEventListener("tick",render);
+
     const canvas = createCanvas(document, containerElement);
     const sceneManager = new SceneManager(canvas);
     resizeCanvas();
@@ -25,7 +28,7 @@ export default containerElement => {
       });
       canvas.addEventListener("mousemove", (event) => {
         sceneManager.mouseMoveOnCanvas(event,canvas);
-      } )
+      } );
       
       
       resizeCanvas();
@@ -43,7 +46,7 @@ export default containerElement => {
     }
 
     function onClickAction(){
-      console.log('click');
+      //sceneManager.clickAction();
     }
 
     function onMouseEnter(){
@@ -52,6 +55,8 @@ export default containerElement => {
     function onMouseLeave(){
       console.log('mousse leave');
     }
+
+    
 
 
 

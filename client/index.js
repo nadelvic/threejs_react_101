@@ -7,7 +7,7 @@ import ThreeContainer from './components/ThreeContainer';
 const App = () => {
   return (
   <div className="container">
-    <h1>First step in Three.js</h1>
+    <h1></h1>
     <div className="canvasContainer">
     <ThreeContainer />
     </div>
