@@ -7,24 +7,10 @@ import ThreeContainer from '../components/ThreeContainer';
 
 
 export default camera => {
-
-    const mouse = new THREE.Vector2();
-
-    const angle = 1 / 4 * Math.PI;
-    const dist = 32;
-    const initialPosition = {
-        x : 0,
-        y : 0,
-        z : 32
-    }
-  
-
+    const initialPosition = getCoordinates(0,-.2);
     //controls.update() must be called after any manual changes to the camera's transform
     camera.position.set(initialPosition.x,initialPosition.y,initialPosition.z);
     camera.lookAt(new THREE.Vector3(0,0,0));
-    //controls.target.set(0, 0, 0);
-    //controls.update();
-
 
     function update(time){
         //update1(time);
@@ -35,27 +21,28 @@ export default camera => {
 
 
     function pointerEffect(mouse){
-
+        const coord = getCoordinates(mouse.x,mouse.y);
         const inertia = 0.05;
-        const phi0 = Math.PI / 2;
-        const phiRange = Math.PI * 5/ 180;
-        const phi = phi0 + mouse.y* phiRange;
+        camera.position.x += ( coord.x - camera.position.x ) * inertia;
+        camera.position.y += ( - coord.y - camera.position.y ) * inertia;
+        camera.position.z += ( coord.z - camera.position.z ) * inertia;
+        camera.lookAt(new THREE.Vector3(0,0,0));
+    }
 
+    function getCoordinates(xPos,yPos){
+        const phi0 = Math.PI * 92 / 180;
+        const phiRange = Math.PI * 5/ 180;
+        const phi = phi0 + yPos* phiRange;
         const theta0 = Math.PI / 4;
         const thetaRange =  Math.PI * 10 / 180;
-        const theta = theta0 + mouse.x * thetaRange; 
+        const theta = theta0 + xPos * thetaRange; 
         const r = 32;
-        const x = r * Math.cos(theta)*Math.sin(phi);   
-        const y = r * Math.cos(phi)
-        const z = r * Math.sin(phi)*Math.sin(theta);
-        
-
-
-        camera.position.x += ( x - camera.position.x ) * inertia;
-        camera.position.y += ( - y - camera.position.y ) * inertia;
-        camera.position.z += ( z - camera.position.z ) * inertia;
-        camera.lookAt(new THREE.Vector3(0,0,0));
-
+        const coord = {
+            x: r * Math.cos(theta)*Math.sin(phi),
+            y: r * Math.cos(phi),
+            z: r * Math.sin(phi)*Math.sin(theta)
+        };
+        return coord;
     }
 
 
