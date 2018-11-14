@@ -1,5 +1,5 @@
 # threejs_react_101
-# Author Nathan Delavictoire
+#### Author Nathan Delavictoire
 
 
 ## Description
