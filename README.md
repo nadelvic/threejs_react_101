@@ -1,4 +1,4 @@
-# threejs_react_101
+# Three.js and react minimal project.
 #### Author Nathan Delavictoire
 
 
@@ -14,6 +14,9 @@ Use the command `npm install`
 
 ## Run
 To run the project use `npm run start` 
+
+## About the content
+Some test where made with the lights, the camera and the object of the scene. Everything may be moved of course.
 
 
 
