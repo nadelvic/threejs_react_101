@@ -52,9 +52,7 @@ const mouse = new THREE.Vector2();
 
 
 function buildScene() { 
-  const scene = new THREE.Scene();
-  scene.background = new THREE.Color("#000");
-  
+  const scene = new THREE.Scene(); 
   return scene;
   }
 function buildRender({ width, height }) { 

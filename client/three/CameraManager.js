@@ -1,10 +1,4 @@
 import * as THREE from 'three';
-import OrbitControls from 'three-orbitcontrols';
-import SceneManager from './SceneManager';
-import TweenMax from 'gsap/TweenMax';
-import TweenLite from 'gsap/TweenLite';
-import ThreeContainer from '../components/ThreeContainer';
-
 
 export default camera => {
     const initialPosition = getCoordinates(0,-.2);
@@ -36,7 +30,7 @@ export default camera => {
         const theta0 = Math.PI / 4;
         const thetaRange =  Math.PI * 10 / 180;
         const theta = theta0 + xPos * thetaRange; 
-        const r = 32;
+        const r = 42;
         const coord = {
             x: r * Math.cos(theta)*Math.sin(phi),
             y: r * Math.cos(phi),
@@ -51,8 +45,8 @@ export default camera => {
         const angle = 1 / 4  * time;
         const dist = 30;
         camera.position.set(dist * Math.sin(angle),10,dist * Math.cos(angle));
-        controls.target.set(0, 0, 0);
-        controls.update();
+        //controls.target.set(0, 0, 0);
+        //controls.update();
 
     }
 

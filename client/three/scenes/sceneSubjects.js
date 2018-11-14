@@ -6,7 +6,8 @@ export default scene => {
 
     var sprite = new THREE.TextureLoader().load(spriteDisc);
     const radius = .2;
-    scene.background = new THREE.Color(0x2E2E2E);
+    
+    scene.background = new THREE.Color("#F1F1F1");
     /* deprecated
 	const mesh = new THREE.Mesh(
         new THREE.IcosahedronBufferGeometry(radius, 4), 
@@ -15,8 +16,8 @@ export default scene => {
 
     const dotGeometry = new THREE.Geometry();
     dotGeometry.vertices.push(new THREE.Vector3( 0, 0, 0));
-    const dotMaterial = new THREE.PointsMaterial( { size: .2, sizeAttenuation: true, map: sprite, alphaTest: 0.5, transparent: true } );
-    dotMaterial.color.setHSL( 0, 0, 40);
+    const dotMaterial = new THREE.PointsMaterial( { size: .3, sizeAttenuation: true, map: sprite, alphaTest: 0.5, transparent: true } );
+    dotMaterial.color.setRGB( 0.0, 0.1, 0.8);
     
 
     const surfaceSize = 40;
@@ -28,17 +29,44 @@ export default scene => {
     const inc = surfaceSize / numberPerLine;
 
     //mesh.position.set(maxX,1, minz);
-
     for(let i = 0; i< numberPerLine; i++){
         for(let j = 0; j < numberPerLine; j++){
             let shift = 0;
-            if(i%2 == 0) shift = inc / 2;
-           
+            if(i%2 == 0) shift = inc / 2;        
             const dot = new THREE.Points( dotGeometry, dotMaterial );  
-            dot.position.set(minX + inc * i,0, minZ + inc * j);
-            scene.add( dot );
-            
+            dot.position.set(minX + inc * i,getPositionY(i,j), minZ + inc * j);
+            scene.add( dot );        
         }
+    }
+
+    function getPositionY(i,j){
+        const r = 2;
+        const a = 4;
+        //return r * Math.cos(a * (j/surfaceSize + 0.5));
+        return 1/110 * (-i*i - j*j) + 22;
+        
+    }
+
+    function Fa(i,j){
+        return i >= j;
+    }
+    function Fb(i,j){
+        return -i <= j - 40;
+    }
+
+    function getPositionYP(i,j){
+        
+        const c = 1;
+        const a = Fa(i,j);
+        const b = Fb(i,j);
+        console.log(a+' '+b);
+        let pos = 0;
+        //console.log(a());
+        if(!a && !b) pos = i / c;
+        else if(a && !b) pos = j / c;
+        else if(a && b) pos =  -i / c;
+        else  pos = -j/c;
+        return pos + 5;
     }
 	//scene.add(mesh);
 	

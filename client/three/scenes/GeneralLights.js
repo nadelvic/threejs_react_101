@@ -12,7 +12,7 @@ export default scene => {
     
     function update1(time){
         //light.intensity = (Math.sin(time/10)+1.5)/1.5;
-		light.color.setHSL( Math.sin(time/10), 0.5, 0.5 );
+		//light.color.setHSL( Math.sin(time/10), 0.5, 0.5 );
         
     }
 	
